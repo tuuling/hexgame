@@ -1,0 +1,8 @@
+.Grid {
+    border: 1px solid red;
+    position: absolute;
+    top: 123px;
+    left: 123px;
+    height: 1000px;
+    width: 1000px
+}
