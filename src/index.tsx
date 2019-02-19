@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { Provider } from 'react-redux'
 import { createStore } from "redux";
-import {devToolsEnhancer} from 'redux-devtools-extension';
+import {devToolsEnhancer} from 'redux-devtools-extension/developmentOnly';
 import rootReducer from "./redux/reducers";
 
 import './index.css';
