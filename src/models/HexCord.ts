@@ -17,6 +17,10 @@ export class HexCord {
     return new this(q, row);
   }
 
+  get key() {
+    return `${this.x}x${this.y}x${this.z}`;
+  }
+
   round() {
     let rx = Math.round(this.x);
     let ry = Math.round(this.y);
