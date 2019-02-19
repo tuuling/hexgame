@@ -10,8 +10,6 @@ export class RhombusCord {
   }
 
   public static pixelToIso(x: number, y: number, decimals: number = 0) {
-    // let isoX = Math.floor((x - (y * 2)) / (this.cellSize.width));
-    // let isoY = Math.floor((y + Math.floor(x / 2) - (this.cellSize.width / 2)) / this.cellSize.height);
 
     let isoX = (x - (y * 2)) / (this.cellSize.width);
     let isoY = (y + Math.floor(x / 2) - (this.cellSize.width / 2)) / this.cellSize.height;
