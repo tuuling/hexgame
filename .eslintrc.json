@@ -1,0 +1,34 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": [
+    "react"
+  ],
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "version": "16.7.20"
+    }
+  },
+  "rules": {
+    "indent-legacy": [1, 2],
+    "no-console": 1,
+    "object-curly-spacing": [1, "always", { "objectsInObjects": false }],
+    "quotes": [1, "single", { "avoidEscape": true }],
+    "react/prop-types": 0,
+    "react/jsx-indent-props": [1, "first"]
+  }
+}

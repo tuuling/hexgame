@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './Grid.css';
-import {Rhombus} from './Rhombus';
+import { Rhombus } from './Rhombus';
 import rhombcell from '../rhombcell.png'
-import {RhombusCord} from '../models/RhombusCord';
-import {connect} from 'react-redux';
-import {changeCords} from '../redux/actions';
+import { RhombusCord } from '../models/RhombusCord';
+import { connect } from 'react-redux';
+import { changeCords } from '../redux/actions';
 import memoize from 'memoize-one';
 
 interface GridProps {
@@ -58,18 +58,18 @@ class RhombusGrid extends Component<MyProps, GridState> {
   );
 
   handleHover = (e: React.MouseEvent) => {
-    let {top, left} = this.gridElement.current!.getBoundingClientRect();
+    let { top, left } = this.gridElement.current!.getBoundingClientRect();
     let xcord = e.clientX - left;
     let ycord = e.clientY - top;
 
     this.props.changeCords(xcord, ycord);
 
-    let {isoX, isoY} = RhombusCord.pixelToIso(xcord, ycord);
+    let { isoX, isoY } = RhombusCord.pixelToIso(xcord, ycord);
 
     let result = new RhombusCord(isoX, isoY);
 
     if (!this.state.selectedCord || (this.state.selectedCord && this.state.selectedCord.key !== result.key)) {
-      this.setState({selectedCord: result});
+      this.setState({ selectedCord: result });
     }
 
   };
@@ -104,7 +104,7 @@ class RhombusGrid extends Component<MyProps, GridState> {
 
 export default connect<{}, DispatchProps, GridProps>(
   null,
-  {changeCords}
+  { changeCords }
 )(RhombusGrid)
 
 

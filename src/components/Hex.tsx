@@ -1,19 +1,19 @@
-import {Component} from 'react';
+import { Component } from 'react';
 import React from 'react';
 import './Hex.css';
 
 interface HexProps {
   radius: number;
-  "pos-x": number;
-  "pos-y": number;
+  'pos-x': number;
+  'pos-y': number;
   hover: boolean;
 }
 
 export class Hex extends Component<HexProps> {
   public static defaultProps = {
     radius: 50,
-    "pos-x": 0,
-    "pos-y": 0,
+    'pos-x': 0,
+    'pos-y': 0,
     hover: false
   };
 
@@ -29,7 +29,7 @@ export class Hex extends Component<HexProps> {
       return (this.props.radius * Math.cos(angle_rad) + this.props['pos-x']) + ',' + (this.props.radius * Math.sin(angle_rad) + this.props['pos-y']);
     }, '').join(' ');
 
-    let style: any = {transformOrigin: `${this.props['pos-x']}px ${this.props['pos-y']}px`};
+    let style: any = { transformOrigin: `${this.props['pos-x']}px ${this.props['pos-y']}px` };
     if (this.props.hover) {
       style.fill = 'green';
     }

@@ -2,7 +2,7 @@ export class RhombusCord {
   x: number;
   y: number;
 
-  public static readonly cellSize = {width: 92, height: 46};
+  public static readonly cellSize = { width: 92, height: 46 };
 
   constructor(x: number, y: number) {
     this.x = x;
@@ -22,7 +22,7 @@ export class RhombusCord {
       isoY = Math.floor(isoY);
     }
 
-    return {isoX, isoY}
+    return { isoX, isoY }
   }
 
   public static offsetToPixel(q: number, r: number) {
@@ -30,7 +30,7 @@ export class RhombusCord {
     let x = (this.cellSize.width / 2) + (q * (this.cellSize.width)) + offset;
     let y = (this.cellSize.height / 2) + (r * this.cellSize.height / 2);
 
-    return {x, y};
+    return { x, y };
   }
 
   public static pixelToOffset(x: number, y: number) {
@@ -41,7 +41,7 @@ export class RhombusCord {
   public static isoToOffset(x: number, y: number) {
     let col = Math.ceil(x / 2 + y / 2);
     let row = y + -x;
-    return {q: col, r: row}
+    return { q: col, r: row }
   }
 
   static fromOffset(col: number, row: number) {

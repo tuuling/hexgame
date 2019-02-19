@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
-import {Hex} from './Hex';
+import React, { Component } from 'react';
+import { Hex } from './Hex';
 import './Grid.css';
-import {HexCord} from '../models/HexCord';
+import { HexCord } from '../models/HexCord';
 import grassimg from '../grass.png'
 
 interface GridProps {
   width: number;
   height: number;
-  "cell-radius": number;
+  'cell-radius': number;
 }
 
 interface GridState {
@@ -18,7 +18,7 @@ export class HexGrid extends Component<GridProps, GridState> {
   public static defaultProps = {
     width: 10,
     height: 10,
-    "cell-radius": 37.5
+    'cell-radius': 37.5
   };
 
   gridElement: React.RefObject<SVGSVGElement>;
@@ -42,11 +42,11 @@ export class HexGrid extends Component<GridProps, GridState> {
   }
 
   handleHover = (e: React.MouseEvent) => {
-    let {top, left} = this.gridElement.current!.getBoundingClientRect();
+    let { top, left } = this.gridElement.current!.getBoundingClientRect();
 
     let result = this.pixelToHex(e.clientX - left - (this.width), e.clientY - top - (this.height / 2));
     if (!this.state.selectedCord || (this.state.selectedCord && this.state.selectedCord.key !== result.key)) {
-      this.setState({selectedCord: result});
+      this.setState({ selectedCord: result });
     }
 
   };
@@ -71,7 +71,7 @@ export class HexGrid extends Component<GridProps, GridState> {
 
         let cord = HexCord.fromOffset(q, r);
 
-        cells.set(cord.key, {posX: posX, posY: posY, cord: cord});
+        cells.set(cord.key, { posX: posX, posY: posY, cord: cord });
       }
     }
 
@@ -91,7 +91,7 @@ export class HexGrid extends Component<GridProps, GridState> {
         <g transform={'translate(10, 10)'}>
           {[...cells].map(([key, hex]) => {
             return (
-              <image href={grassimg} width={'65'} height={'75'} x={hex.posX - 32.5 } y={hex.posY - 37.5}/>
+              <image key={key} href={grassimg} width={'65'} height={'75'} x={hex.posX - 32.5 } y={hex.posY - 37.5}/>
             )
           })}
         </g>

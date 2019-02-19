@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import RhombusGrid from './RhombusGrid';
 
-import {connect} from 'react-redux'
-import {changeCords} from '../redux/actions'
-import {RhombusCord} from '../models/RhombusCord';
+import { connect } from 'react-redux'
+import { changeCords } from '../redux/actions'
+import { RhombusCord } from '../models/RhombusCord';
 
 
 interface StateProps {
@@ -25,9 +25,9 @@ class App extends Component<MyProps, {}> {
 
   render(): React.ReactNode {
 
-    let {x, y} = this.props.mouseCords;
-    let {isoX, isoY} = RhombusCord.pixelToIso(x, y, 2);
-    let {q, r} = RhombusCord.pixelToOffset(x, y);
+    let { x, y } = this.props.mouseCords;
+    let { isoX, isoY } = RhombusCord.pixelToIso(x, y, 2);
+    let { q, r } = RhombusCord.pixelToOffset(x, y);
 
     return (
       <div className="App">
@@ -56,5 +56,5 @@ function mapStateToProps(state: any): StateProps {
 
 export default connect<StateProps, DispatchProps, {}>(
   mapStateToProps,
-  {changeCords}
+  { changeCords }
 )(App)
