@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './Grid.css';
-import { Rhombus } from './Rhombus';
+import {Rhombus} from './Rhombus';
+import {Character} from './Character';
 import rhombcell from '../rhombcell.png'
-import { RhombusCord } from '../models/RhombusCord';
-import { connect } from 'react-redux';
-import { changeCords } from '../redux/actions';
+import {RhombusCord} from '../models/RhombusCord';
+import {connect} from 'react-redux';
+import {changeCords} from '../redux/actions';
 import memoize from 'memoize-one';
 
 interface GridProps {
@@ -14,6 +15,7 @@ interface GridProps {
 
 interface GridState {
   selectedCord: RhombusCord | null;
+  charLocation: { x: number, y: number };
 }
 
 interface DispatchProps {
@@ -28,19 +30,22 @@ class RhombusGrid extends Component<MyProps, GridState> {
     height: 1
   };
 
-  gridElement: React.RefObject<SVGSVGElement>;
-
   constructor(props: MyProps) {
     super(props);
 
     this.state = {
-      selectedCord: null
+      selectedCord: null,
+      charLocation: RhombusCord.offsetToPixel(0, 0)
     };
 
     this.gridElement = React.createRef();
   }
 
-  //
+  gridElement: React.RefObject<SVGSVGElement>;
+
+  get currentCells() {
+    return this.cells(this.props.width, this.props.height);
+  }
 
   cells = memoize(
     (width, height) => {
@@ -57,19 +62,33 @@ class RhombusGrid extends Component<MyProps, GridState> {
     }
   );
 
+  locationOnMap(e: React.MouseEvent) {
+    let {top, left} = this.gridElement.current!.getBoundingClientRect();
+
+    return {x: e.clientX - left, y: e.clientY - top}
+  }
+
   handleHover = (e: React.MouseEvent) => {
-    let { top, left } = this.gridElement.current!.getBoundingClientRect();
-    let xcord = e.clientX - left;
-    let ycord = e.clientY - top;
+    let { x: xcord, y: ycord } = this.locationOnMap(e);
 
     this.props.changeCords(xcord, ycord);
 
-    let { isoX, isoY } = RhombusCord.pixelToIso(xcord, ycord);
+    let {isoX, isoY} = RhombusCord.pixelToIso(xcord, ycord);
 
     let result = new RhombusCord(isoX, isoY);
 
     if (!this.state.selectedCord || (this.state.selectedCord && this.state.selectedCord.key !== result.key)) {
-      this.setState({ selectedCord: result });
+      this.setState({selectedCord: result});
+    }
+
+  };
+
+  handleClick = (e: React.MouseEvent) => {
+    let { x: xcord, y: ycord } = this.locationOnMap(e);
+
+    let cell = RhombusCord.fromPixel(xcord, ycord);
+    if(this.currentCells.has(cell.key)) {
+      this.setState({charLocation: {x: cell.pixel.x, y: cell.pixel.y}});
     }
 
   };
@@ -79,7 +98,7 @@ class RhombusGrid extends Component<MyProps, GridState> {
     let cells = this.cells(this.props.width, this.props.height);
 
     return (
-      <svg className='Grid' onMouseMove={this.handleHover}>
+      <svg className='Grid' onMouseMove={this.handleHover} onClick={this.handleClick}>
 
         <g transform={'translate(0, 0)'}>
           {[...cells].map(([key, cord]) => {
@@ -97,6 +116,9 @@ class RhombusGrid extends Component<MyProps, GridState> {
                              hover={!!this.state.selectedCord && this.state.selectedCord.key === key}/>)
           })}
         </g>
+        <g transform={'translate(0, 0)'}>
+          <Character location={this.state.charLocation}/>
+        </g>
       </svg>
     );
   }
@@ -104,7 +126,7 @@ class RhombusGrid extends Component<MyProps, GridState> {
 
 export default connect<{}, DispatchProps, GridProps>(
   null,
-  { changeCords }
+  {changeCords}
 )(RhombusGrid)
 
 

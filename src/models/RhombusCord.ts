@@ -2,7 +2,7 @@ export class RhombusCord {
   x: number;
   y: number;
 
-  public static readonly cellSize = { width: 92, height: 46 };
+  public static readonly cellSize = {width: 92, height: 46};
 
   constructor(x: number, y: number) {
     this.x = x;
@@ -50,6 +50,11 @@ export class RhombusCord {
     let x = -Math.ceil(row / 2) + col;
 
     return new this(x, y);
+  }
+
+  static fromPixel(x: number, y: number) {
+    let iso = RhombusCord.pixelToIso(x, y);
+    return new this(iso.isoX, iso.isoY);
   }
 
   get key() {
