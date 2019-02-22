@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import charimg from '../character.png'
 
 import Victor from 'victor';
-import {RhombusCord} from '../models/RhombusCord';
+import { RhombusCord } from '../models/RhombusCord';
 
 interface MyProps {
   location: { x: number, y: number };
@@ -53,7 +53,21 @@ export class Character extends Component<MyProps, MyState> {
     let remainingVector = pixelVector.clone();
 
     console.log(speedVector.angleDeg());
-    let direction = (Math.abs(speedVector.angleDeg()) > 90) ? 1 : 0;
+    let direction = 0;
+
+    {
+      let angle = speedVector.angleDeg();
+      if(angle >= 0 && angle <= 90) {
+        direction = 2;
+      } else if(angle > 90 && angle <= 180) {
+        direction = 1
+      } else if(angle <= 0 && angle >= -90) {
+        direction = 3
+      } else if(angle < -90 && angle >= -180) {
+        direction = 4
+      }
+    }
+
 
     this.moveInterval = window.setInterval(() => {
 
@@ -81,14 +95,19 @@ export class Character extends Component<MyProps, MyState> {
 
     }, 1000 / this.framerate);
 
+    this.setState({
+      animationState: 1
+    });
+
     this.animationInterval = window.setInterval(() => {
       let newState = 0;
       switch (this.state.animationState) {
-        case (0 || 4):
-          newState = 1;
-          break;
-        default:
-          newState = this.state.animationState + 1;
+      case 0:
+      case 4:
+        newState = 1;
+        break;
+      default:
+        newState = this.state.animationState + 1;
       }
 
       this.setState({
@@ -102,8 +121,8 @@ export class Character extends Component<MyProps, MyState> {
     return (
       <>
         <defs>
-          <pattern id="charimage" x={this.state.animationState} y={this.state.directionState} width="5" height="2">
-            <image href={charimg} width="100" height="84"/>
+          <pattern id="charimage" x={this.state.animationState} y={this.state.directionState} width="5" height="4">
+            <image href={charimg} width="100" height="168"/>
           </pattern>
         </defs>
 
