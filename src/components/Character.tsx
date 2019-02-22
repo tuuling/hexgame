@@ -52,7 +52,6 @@ export class Character extends Component<MyProps, MyState> {
 
     let remainingVector = pixelVector.clone();
 
-    console.log(speedVector.angleDeg());
     let direction = 0;
 
     {

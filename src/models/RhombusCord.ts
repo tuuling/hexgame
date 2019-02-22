@@ -2,7 +2,7 @@ export class RhombusCord {
   x: number;
   y: number;
 
-  public static readonly cellSize = {width: 92, height: 46};
+  public static readonly cellSize = { width: 92, height: 46 };
 
   constructor(x: number, y: number) {
     this.x = x;

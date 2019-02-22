@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './Grid.css';
-import {Rhombus} from './Rhombus';
-import {Character} from './Character';
+import { Rhombus } from './Rhombus';
+import { Character } from './Character';
 import rhombcell from '../rhombcell.png'
-import {RhombusCord} from '../models/RhombusCord';
-import {connect} from 'react-redux';
-import {changeCords} from '../redux/actions';
+import { RhombusCord } from '../models/RhombusCord';
+import { connect } from 'react-redux';
+import { changeCords } from '../redux/actions';
 import memoize from 'memoize-one';
 
 interface GridProps {
@@ -63,9 +63,9 @@ class RhombusGrid extends Component<MyProps, GridState> {
   );
 
   locationOnMap(e: React.MouseEvent) {
-    let {top, left} = this.gridElement.current!.getBoundingClientRect();
+    let { top, left } = this.gridElement.current!.getBoundingClientRect();
 
-    return {x: e.clientX - left, y: e.clientY - top}
+    return { x: e.clientX - left, y: e.clientY - top }
   }
 
   handleHover = (e: React.MouseEvent) => {
@@ -73,12 +73,12 @@ class RhombusGrid extends Component<MyProps, GridState> {
 
     this.props.changeCords(xcord, ycord);
 
-    let {isoX, isoY} = RhombusCord.pixelToIso(xcord, ycord);
+    let { isoX, isoY } = RhombusCord.pixelToIso(xcord, ycord);
 
     let result = new RhombusCord(isoX, isoY);
 
     if (!this.state.selectedCord || (this.state.selectedCord && this.state.selectedCord.key !== result.key)) {
-      this.setState({selectedCord: result});
+      this.setState({ selectedCord: result });
     }
 
   };
@@ -88,7 +88,7 @@ class RhombusGrid extends Component<MyProps, GridState> {
 
     let cell = RhombusCord.fromPixel(xcord, ycord);
     if(this.currentCells.has(cell.key)) {
-      this.setState({charLocation: {x: cell.pixel.x, y: cell.pixel.y}});
+      this.setState({ charLocation: { x: cell.pixel.x, y: cell.pixel.y }});
     }
 
   };
@@ -126,7 +126,7 @@ class RhombusGrid extends Component<MyProps, GridState> {
 
 export default connect<{}, DispatchProps, GridProps>(
   null,
-  {changeCords}
+  { changeCords }
 )(RhombusGrid)
 
 
