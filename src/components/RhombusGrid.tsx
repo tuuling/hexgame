@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import './Grid.css';
 import { Rhombus } from './Rhombus';
 import { Character } from './Character';
-import rhombcell from '../rhombcell.png'
 import { RhombusCord } from '../models/RhombusCord';
 import { connect } from 'react-redux';
 import { changeCords } from '../redux/actions';
 import memoize from 'memoize-one';
+
+import rhombcell from '../rhombcell.png';
+import {Hedge} from './obstacles/Hedge';
+
 
 interface GridProps {
   width: number;
@@ -96,6 +99,7 @@ class RhombusGrid extends Component<MyProps, GridState> {
 
   render(): React.ReactNode {
     let cells = this.cells(this.props.width, this.props.height);
+    const cell0 = cells.get('0x1');
 
     return (
       <svg className='Grid' onMouseMove={this.handleHover} onClick={this.handleClick}>
@@ -117,6 +121,10 @@ class RhombusGrid extends Component<MyProps, GridState> {
           })}
         </g>
         <g transform={'translate(0, 0)'}>
+
+          {cell0 &&
+            <Hedge x={cell0.pixel.x} y={cell0.pixel.y}/>
+          }
           <Character location={this.state.charLocation}/>
         </g>
       </svg>
