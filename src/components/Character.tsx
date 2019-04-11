@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
+import Victor from 'victor';
+
+import RhombusCord from '../models/RhombusCord';
+
 import charimg from '../character.png'
 
-import Victor from 'victor';
-import { RhombusCord } from '../models/RhombusCord';
-
 interface MyProps {
-  location: { x: number, y: number };
+  location: { x: number, y: number }
 }
 
 interface MyState {
-  currentLocation: { x: number, y: number };
-  animationState: number;
-  directionState: number;
+  currentLocation: { x: number, y: number },
+  animationState: number,
+  directionState: number
 }
 
 
-export class Character extends Component<MyProps, MyState> {
+export default class Character extends Component<MyProps, MyState> {
 
   private framerate = 60;
   private speed = 2;
@@ -101,12 +102,12 @@ export class Character extends Component<MyProps, MyState> {
     this.animationInterval = window.setInterval(() => {
       let newState = 0;
       switch (this.state.animationState) {
-      case 0:
-      case 4:
-        newState = 1;
-        break;
-      default:
-        newState = this.state.animationState + 1;
+        case 0:
+        case 4:
+          newState = 1;
+          break;
+        default:
+          newState = this.state.animationState + 1;
       }
 
       this.setState({

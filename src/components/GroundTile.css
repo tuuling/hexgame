@@ -1,10 +1,10 @@
-.Rhombus {
+.GroundTile {
     fill: whitesmoke;
     fill-opacity: 0;
     cursor: pointer;
 }
 
-.Rhombus.hover {
+.GroundTile.hover {
     fill: whitesmoke;
     fill-opacity: 0.2;
     cursor: pointer;

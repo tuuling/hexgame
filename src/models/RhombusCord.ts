@@ -1,4 +1,4 @@
-export class RhombusCord {
+export default class RhombusCord {
   x: number;
   y: number;
 
