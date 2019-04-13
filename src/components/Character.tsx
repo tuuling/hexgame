@@ -1,22 +1,31 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Victor from 'victor';
 
 import RhombusCord from '../models/RhombusCord';
 
 import charimg from '../character.png'
+import State from '../interfaces/State';
 
-interface MyProps {
-  location: { x: number, y: number }
+import { setCharLoc } from '../redux/actions';
+
+interface StateProps {
+  location: State['character']['location'],
+  destination: State['character']['destination']
 }
 
+interface DispatchProps {
+  setCharLoc: typeof setCharLoc
+}
+
+type MyProps = DispatchProps & StateProps;
+
 interface MyState {
-  currentLocation: { x: number, y: number },
   animationState: number,
   directionState: number
 }
 
-
-export default class Character extends Component<MyProps, MyState> {
+class Character extends Component<MyProps, MyState> {
 
   private framerate = 60;
   private speed = 2;
@@ -27,14 +36,13 @@ export default class Character extends Component<MyProps, MyState> {
     super(props);
 
     this.state = {
-      currentLocation: props.location,
       animationState: 0,
       directionState: 0
     }
   }
 
   componentDidUpdate(prevProps: MyProps) {
-    if (this.props.location.x !== prevProps.location.x || this.props.location.y !== prevProps.location.y) {
+    if (this.props.destination.x !== prevProps.destination.x || this.props.destination.y !== prevProps.destination.y) {
       this.animateLocation();
     }
   }
@@ -43,11 +51,11 @@ export default class Character extends Component<MyProps, MyState> {
     window.clearInterval(this.moveInterval);
     window.clearInterval(this.animationInterval);
 
-    let currentIso = RhombusCord.pixelToIso(this.props.location.x, this.props.location.y, 2);
-    let prevIso = RhombusCord.pixelToIso(this.state.currentLocation.x, this.state.currentLocation.y, 2);
+    let currentIso = RhombusCord.pixelToIso(this.props.destination.x, this.props.destination.y, 2);
+    let prevIso = RhombusCord.pixelToIso(this.props.location.x, this.props.location.y, 2);
 
     let isoVector = new Victor(currentIso.isoX - prevIso.isoX, currentIso.isoY - prevIso.isoY);
-    let pixelVector = new Victor(this.props.location.x - this.state.currentLocation.x, this.props.location.y - this.state.currentLocation.y);
+    let pixelVector = new Victor(this.props.destination.x - this.props.location.x, this.props.destination.y - this.props.location.y);
 
     let speedVector = new Victor(pixelVector.x / isoVector.length() / this.framerate * this.speed, pixelVector.y / isoVector.length() / this.framerate * this.speed);
 
@@ -74,19 +82,16 @@ export default class Character extends Component<MyProps, MyState> {
       if (remainingVector.lengthSq() <= speedVector.lengthSq()) {
         window.clearInterval(this.moveInterval);
         window.clearInterval(this.animationInterval);
+        this.props.setCharLoc(this.props.destination.x, this.props.destination.y);
         this.setState({
-          currentLocation: {
-            x: this.props.location.x,
-            y: this.props.location.y
-          },
           animationState: 0
         })
       } else {
+        this.props.setCharLoc(
+          Math.round(this.props.destination.x - remainingVector.x),
+          Math.round(this.props.destination.y - remainingVector.y)
+        );
         this.setState({
-          currentLocation: {
-            x: Math.round(this.props.location.x - remainingVector.x),
-            y: Math.round(this.props.location.y - remainingVector.y)
-          },
           directionState: direction
         });
 
@@ -126,10 +131,22 @@ export default class Character extends Component<MyProps, MyState> {
           </pattern>
         </defs>
 
-        <rect fill="url(#charimage)" width="20" height="42" x={this.state.currentLocation.x - 10}
-              y={this.state.currentLocation.y - 40}/>
+        <rect fill="url(#charimage)" width="20" height="42" x={this.props.location.x - 10}
+              y={this.props.location.y - 40}/>
 
       </>
     );
   }
 }
+
+function mapStateToProps(state: State): StateProps {
+  return {
+    location: state.character.location,
+    destination: state.character.destination
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  { setCharLoc }
+)(Character)

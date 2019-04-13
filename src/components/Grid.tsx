@@ -9,7 +9,7 @@ import Character from './Character';
 import HoverTile from './HoverTile';
 import Hedge from './map-objects/Hedge';
 
-import { changeCords } from '../redux/actions';
+import { changeCords, setCharDest } from '../redux/actions';
 
 import './Grid.css';
 import State from '../interfaces/State';
@@ -25,7 +25,8 @@ interface GridState {
 }
 
 interface DispatchProps {
-  changeCords: typeof changeCords
+  changeCords: typeof changeCords,
+  setCharDest: typeof setCharDest
 }
 
 type MyProps = DispatchProps & StateProps;
@@ -63,7 +64,7 @@ class Grid extends Component<MyProps, GridState> {
 
     let cell = RhombusCord.fromPixel(xcord, ycord);
     if(cell.key in this.props.map.ground) {
-      this.setState({ charLocation: { x: cell.pixel.x, y: cell.pixel.y }});
+      this.props.setCharDest(cell.pixel.x, cell.pixel.y);
     }
 
   };
@@ -91,7 +92,7 @@ class Grid extends Component<MyProps, GridState> {
 
         <g transform={'translate(0, 0)'}>
 
-          <Character location={this.state.charLocation}/>
+          <Character />
         </g>
       </svg>
     );
@@ -105,7 +106,7 @@ function mapStateToProps(state: State): StateProps {
 
 export default connect(
   mapStateToProps,
-  { changeCords }
+  { changeCords, setCharDest }
 )(Grid)
 
 

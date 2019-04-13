@@ -3,6 +3,29 @@ import { AnyAction, combineReducers } from 'redux';
 
 import State from '../interfaces/State';
 
+function destination(state = { x: 1, y: 1 }, action: AnyAction) {
+  switch (action.type) {
+    case 'SET_CHAR_DEST':
+      return action.cords;
+    default:
+      return state
+  }
+}
+
+function location(state = { x: 1, y: 1 }, action: AnyAction) {
+  switch (action.type) {
+    case 'SET_CHAR_LOC':
+      return action.cords;
+    default:
+      return state
+  }
+}
+
+const character = combineReducers({
+  destination,
+  location
+});
+
 function mouseCords(state = { x: 1, y: 1 }, action: AnyAction) {
   switch (action.type) {
     case 'CHANGE_CORDS':
@@ -53,6 +76,7 @@ function map(state = { ground: {}, objects: {}}, action: AnyAction) {
 
 const hexgameApp = combineReducers({
   mouseCords,
+  character,
   map
 });
 
