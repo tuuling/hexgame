@@ -3,6 +3,6 @@ export default interface WorldMap {
     [propName: string]: {type: string}
   },
   objects: {
-    [propName: string]: string[]
+    [propName: string]: string
   }
 }

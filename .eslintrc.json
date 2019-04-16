@@ -31,7 +31,7 @@
     "object-curly-spacing": [1, "always", { "objectsInObjects": false }],
     "quotes": [1, "single", { "avoidEscape": true }],
     "indent": "off",
-    "@typescript-eslint/indent": ["error", 2, { "ignoredNodes": ["JSXElement *", "JSXElement"]}],
+    "@typescript-eslint/indent": ["error", 2, { "ignoredNodes": ["JSXAttribute"]}],
     "@typescript-eslint/explicit-member-accessibility": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/member-delimiter-style": ["warn",

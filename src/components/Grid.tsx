@@ -1,27 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import WorldMap from '../interfaces/WorldMap';
 import RhombusCord from '../models/RhombusCord';
 
-import GroundTile from './GroundTile';
-import Character from './Character';
 import HoverTile from './HoverTile';
-import Hedge from './map-objects/Hedge';
+import Ground from './Ground';
 
 import { changeCords, setCharDest } from '../redux/actions';
 
 import './Grid.css';
 import State from '../interfaces/State';
+import Objects from './Objects';
 
 
 interface StateProps {
-  map: WorldMap
-}
-
-interface GridState {
-  selectedCord: RhombusCord | null,
-  charLocation: { x: number, y: number }
+  ground: State['map']['ground']
 }
 
 interface DispatchProps {
@@ -31,15 +24,10 @@ interface DispatchProps {
 
 type MyProps = DispatchProps & StateProps;
 
-class Grid extends Component<MyProps, GridState> {
+class Grid extends Component<MyProps> {
 
   constructor(props: MyProps) {
     super(props);
-
-    this.state = {
-      selectedCord: null,
-      charLocation: RhombusCord.offsetToPixel(0, 0)
-    };
 
     this.gridElement = React.createRef();
   }
@@ -63,7 +51,7 @@ class Grid extends Component<MyProps, GridState> {
     let { x: xcord, y: ycord } = this.locationOnMap(e);
 
     let cell = RhombusCord.fromPixel(xcord, ycord);
-    if(cell.key in this.props.map.ground) {
+    if(cell.key in this.props.ground) {
       this.props.setCharDest(cell.pixel.x, cell.pixel.y);
     }
 
@@ -75,25 +63,14 @@ class Grid extends Component<MyProps, GridState> {
       <svg className='Grid' onMouseMove={this.handleHover} onClick={this.handleClick}>
 
         <g transform={'translate(0, 0)'} ref={this.gridElement}>
-          {Object.keys(this.props.map.ground).map((key) => {
-            return (<GroundTile key={key}
-                                tileId = {key}
-                                tile = {this.props.map.ground[key]}/>)
-          })}
+          <Ground/>
           <HoverTile/>
         </g>
 
         <g transform={'translate(0, 0)'}>
-          {Object.keys(this.props.map.objects).map((key) => {
-            return (<Hedge key={key} tileId={key}/>)
-          })}
-
+          <Objects/>
         </g>
 
-        <g transform={'translate(0, 0)'}>
-
-          <Character />
-        </g>
       </svg>
     );
   }
@@ -101,7 +78,7 @@ class Grid extends Component<MyProps, GridState> {
 
 
 function mapStateToProps(state: State): StateProps {
-  return { map: state.map };
+  return { ground: state.map.ground };
 }
 
 export default connect(

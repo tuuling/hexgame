@@ -9,7 +9,12 @@ export default interface State {
       [propName: string]: {type: string}
     },
     objects: {
-      [propName: string]: string[]
+      [propName: string]: string
     }
+  },
+  render: {
+    order: string[],
+    lookup: {[propName: string]: number},
+    objectOrder: string[]
   }
 }

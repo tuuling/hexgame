@@ -44,12 +44,18 @@ export default class RhombusCord {
     return { q: col, r: row }
   }
 
-  static fromOffset(col: number, row: number) {
-
+  public static offsetToIso(col: number, row: number) {
     let y = col + Math.floor(row / 2);
     let x = -Math.ceil(row / 2) + col;
 
-    return new this(x, y);
+    return { x, y };
+  }
+
+  static fromOffset(col: number, row: number) {
+
+    let iso = this.offsetToIso(col, row);
+
+    return new this(iso.x, iso.y);
   }
 
   static fromPixel(x: number, y: number) {

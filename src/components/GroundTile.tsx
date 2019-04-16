@@ -6,14 +6,20 @@ import Tile from '../models/Tile';
 
 import './GroundTile.css'
 import State from '../interfaces/State';
+import { connect } from 'react-redux';
 
-interface RhombusProps {
-  tileId: string,
+interface StateProps {
   tile: State['map']['ground']['propName']
 }
 
-export default class GroundTile extends Component<RhombusProps> {
-  constructor(props: RhombusProps) {
+interface GroundTileProps {
+  tileId: string
+}
+
+type MyProps = GroundTileProps & StateProps;
+
+class GroundTile extends Component<MyProps> {
+  constructor(props: MyProps) {
     super(props);
   }
 
@@ -28,7 +34,6 @@ export default class GroundTile extends Component<RhombusProps> {
   }
 
   render(): React.ReactNode {
-
     return (
       <image href={this.tile.tileImage}
              width={'90'}
@@ -39,3 +44,14 @@ export default class GroundTile extends Component<RhombusProps> {
     )
   }
 }
+
+
+function mapStateToProps(initialState: State, ownProps: GroundTileProps) {
+  return (state: State) => {
+    return { tile: state.map.ground[ownProps.tileId] };
+  }
+}
+
+export default connect(
+  mapStateToProps
+)(GroundTile)
