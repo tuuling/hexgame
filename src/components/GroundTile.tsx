@@ -34,6 +34,7 @@ class GroundTile extends Component<MyProps> {
   }
 
   render(): React.ReactNode {
+    // noinspection HtmlDeprecatedTag
     return (
       <image href={this.tile.tileImage}
              width={'90'}

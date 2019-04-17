@@ -123,6 +123,7 @@ class Character extends Component<MyProps, MyState> {
   }
 
   render(): React.ReactNode {
+    // noinspection HtmlDeprecatedTag
     return (
       <>
         <defs>

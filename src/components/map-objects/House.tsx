@@ -10,6 +10,7 @@ interface MyProps {
 export default class House extends PureComponent<MyProps> {
 
   render(): React.ReactNode {
+    // noinspection HtmlDeprecatedTag
     return (
       <image href={house} height={223} width={214} x={this.props.x - 39} y={this.props.y - 181}/>
     );
