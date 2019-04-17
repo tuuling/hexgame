@@ -47,8 +47,8 @@ class Objects extends Component<StateProps> {
     } else if (charLookupIndex >= this.orderLookup[this.orderLookup.length-1]) {
       renderCharAfter = this.orderLookup.length-1;
     } else {
-      renderCharAfter = this.orderLookup.findIndex((item) => {
-        return (item <= charLookupIndex)
+      renderCharAfter = this.orderLookup.findIndex((item, index, obj) => {
+        return (item <= charLookupIndex) && obj[index+1] > charLookupIndex;
       })
     }
 

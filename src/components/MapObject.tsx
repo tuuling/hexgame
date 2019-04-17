@@ -1,11 +1,14 @@
 import React, { PureComponent } from 'react';
 import RhombusCord from '../models/RhombusCord';
+import { connect } from 'react-redux';
 
 import memoize from 'memoize-one';
+
 import State from '../interfaces/State';
-import { connect } from 'react-redux';
+
 import Hedge from './map-objects/Hedge';
 import House from './map-objects/House';
+import Tree from './map-objects/Tree';
 
 interface StateProps {
   object: State['map']['objects']['propName']
@@ -35,6 +38,8 @@ class MapObject extends PureComponent<MyProps> {
         return <House x={this.cord.pixel.x} y={this.cord.pixel.y}/>;
       case 'hedge':
         return <Hedge  x={this.cord.pixel.x} y={this.cord.pixel.y}/>;
+      case 'tree':
+        return <Tree  x={this.cord.pixel.x} y={this.cord.pixel.y}/>;
     }
   }
 }
