@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import Grid from './Grid';
 import Debug from './Debug';
+import DebugGrid from './DebugGrid';
 
 import { loadMap } from '../redux/actions'
 
@@ -25,6 +26,7 @@ class App extends Component<DispatchProps> {
       <div className="App">
         <Debug />
         <Grid />
+        <DebugGrid />
       </div>
     );
   }

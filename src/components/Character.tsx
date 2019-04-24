@@ -8,10 +8,12 @@ import charimg from '../character.png'
 import State from '../interfaces/State';
 
 import { setCharLoc } from '../redux/actions';
+import { getPathSelector } from '../redux/selectors';
 
 interface StateProps {
   location: State['character']['location'],
-  destination: State['character']['destination']
+  destination: State['character']['destination'],
+  getPath: Function
 }
 
 interface DispatchProps {
@@ -21,7 +23,9 @@ interface DispatchProps {
 type MyProps = DispatchProps & StateProps;
 
 interface MyState {
+  // walking animation state
   animationState: number,
+  // direction the char is facing
   directionState: number
 }
 
@@ -31,6 +35,9 @@ class Character extends Component<MyProps, MyState> {
   private speed = 2;
   private moveInterval: number | undefined;
   private animationInterval: number | undefined;
+
+  // keep path as private prop. Prolly would be better to keep in state or store
+  private path: string[] = [];
 
   constructor(props: MyProps) {
     super(props);
@@ -42,8 +49,17 @@ class Character extends Component<MyProps, MyState> {
   }
 
   componentDidUpdate(prevProps: MyProps) {
+    // Animate when destination changes
     if (this.props.destination.x !== prevProps.destination.x || this.props.destination.y !== prevProps.destination.y) {
+
+      let dest = RhombusCord.fromPixel(this.props.destination.x, this.props.destination.y).key;
+      let start = RhombusCord.fromPixel(this.props.location.x, this.props.location.y).key;
+      this.path = this.props.getPath(start, dest);
+      // Start moving to 2nd waypoint.
+      this.path.shift();
+
       this.animateLocation();
+
     }
   }
 
@@ -51,11 +67,13 @@ class Character extends Component<MyProps, MyState> {
     window.clearInterval(this.moveInterval);
     window.clearInterval(this.animationInterval);
 
-    let currentIso = RhombusCord.pixelToIso(this.props.destination.x, this.props.destination.y, 2);
+    let waypoint = RhombusCord.fromKey(this.path[0]);
+
+    let currentIso = RhombusCord.pixelToIso(waypoint.pixel.x, waypoint.pixel.y, 2);
     let prevIso = RhombusCord.pixelToIso(this.props.location.x, this.props.location.y, 2);
 
     let isoVector = new Victor(currentIso.isoX - prevIso.isoX, currentIso.isoY - prevIso.isoY);
-    let pixelVector = new Victor(this.props.destination.x - this.props.location.x, this.props.destination.y - this.props.location.y);
+    let pixelVector = new Victor(waypoint.pixel.x - this.props.location.x, waypoint.pixel.y - this.props.location.y);
 
     let speedVector = new Victor(pixelVector.x / isoVector.length() / this.framerate * this.speed, pixelVector.y / isoVector.length() / this.framerate * this.speed);
 
@@ -78,18 +96,32 @@ class Character extends Component<MyProps, MyState> {
 
 
     this.moveInterval = window.setInterval(() => {
-
-      if (remainingVector.lengthSq() <= speedVector.lengthSq()) {
+      // When we have arrived at our destination
+      if (remainingVector.lengthSq() <= speedVector.lengthSq() && this.path.length === 1) {
         window.clearInterval(this.moveInterval);
         window.clearInterval(this.animationInterval);
+        this.path = [];
         this.props.setCharLoc(this.props.destination.x, this.props.destination.y);
         this.setState({
           animationState: 0
         })
+      // When we have arrived at our waypoint
+      } else if(remainingVector.lengthSq() <= speedVector.lengthSq() && this.path.length > 1) {
+        window.clearInterval(this.moveInterval);
+        window.clearInterval(this.animationInterval);
+        // shift the waypoint from the array
+        this.path.shift();
+        this.props.setCharLoc(waypoint.pixel.x, waypoint.pixel.y);
+        this.setState({
+          directionState: direction
+        });
+        // start animation again to the next waypoint
+        this.animateLocation();
+      // Still some walking left to do
       } else {
         this.props.setCharLoc(
-          Math.round(this.props.destination.x - remainingVector.x),
-          Math.round(this.props.destination.y - remainingVector.y)
+          Math.round(waypoint.pixel.x - remainingVector.x),
+          Math.round(waypoint.pixel.y - remainingVector.y)
         );
         this.setState({
           directionState: direction
@@ -143,7 +175,8 @@ class Character extends Component<MyProps, MyState> {
 function mapStateToProps(state: State): StateProps {
   return {
     location: state.character.location,
-    destination: state.character.destination
+    destination: state.character.destination,
+    getPath: getPathSelector(state),
   };
 }
 

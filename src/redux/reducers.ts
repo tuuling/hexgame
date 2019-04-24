@@ -40,6 +40,7 @@ function map(state = { ground: {}, objects: {}}, action: AnyAction) {
     case 'LOAD_MAP': {
       let newMap: State['map'] = { ground: {}, objects: {}};
 
+      // map is saved as column and rows, but x and y store
       Object.keys(action.map.ground).forEach((key: string) => {
         let parseKey = key.match(/(-?\d+)[q](-?\d+)/);
 
@@ -77,10 +78,14 @@ function map(state = { ground: {}, objects: {}}, action: AnyAction) {
 const initialRender = {
   order: [],
   lookup: {},
-  objectOrder: [] };
+  objectOrder: [],
+  limits: { x: { min: 0, max: 0 }, y: { min: 0, max: 0 }}
+};
 
 function render(state: State['render'] = initialRender, action: AnyAction) {
   switch (action.type) {
+    // When the map is loaded, calculate data used for rendering and save in store
+    // Could use reselect to memoize this, but easier to debug if kept in redux store
     case 'LOAD_MAP': {
 
       const offsetToKey = (item: string) => {
@@ -95,6 +100,8 @@ function render(state: State['render'] = initialRender, action: AnyAction) {
 
       let order: string[] = Object.keys(action.map.ground);
 
+      // sort the ground tiles in order which they need to be rendered. Top to bottom, left to right.
+      // order in column row system
       order.sort((a, b) => {
 
         let A = a.match(/(-?\d+)[q](-?\d+)/);
@@ -110,13 +117,32 @@ function render(state: State['render'] = initialRender, action: AnyAction) {
 
       });
 
+      // once ordered convert to iso
       order = order.map(offsetToKey);
 
+
+      // generate lookup for reverse lookup - key => render order
       let lookup: State['render']['lookup'] = order.reduce((result: State['render']['lookup'], current, index) => {
         result[current] = index;
         return result;
       }, {});
 
+      let limits = { x: { min: 0, max: 0 }, y: { min: 0, max: 0 }};
+
+      // find the limits of the map
+      order.forEach((item) => {
+        let parseKey = item.match(/(-?\d+)[x](-?\d+)/);
+
+        if(parseKey) {
+          let [ , x, y ] = parseKey.map(function(item) {return parseInt(item)});
+          limits.x.max = Math.max(limits.x.max, x);
+          limits.x.min = Math.min(limits.x.min, x);
+          limits.y.max = Math.max(limits.y.max, y);
+          limits.y.min = Math.min(limits.y.min, y);
+        }
+      });
+
+      // Find out the order in which the objects need to rendered using.
       let objectOrder: string[] = Object.keys(action.map.objects);
 
       objectOrder = objectOrder.map(offsetToKey);
@@ -125,7 +151,7 @@ function render(state: State['render'] = initialRender, action: AnyAction) {
         return lookup[a] - lookup[b];
       });
 
-      return { order: order, lookup: lookup, objectOrder: objectOrder };
+      return { order: order, lookup: lookup, objectOrder: objectOrder, limits: limits };
     }
     default:
       return state

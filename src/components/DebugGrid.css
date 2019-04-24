@@ -1,0 +1,24 @@
+.DebugGrid {
+  border: 1px solid red;
+  position: absolute;
+  top: 123px;
+  left: 1130px;
+  height: 500px;
+  width: 500px
+}
+
+.DebugGrid .debugrow{
+  clear: both;
+  overflow: auto;
+}
+
+.DebugGrid .debugcell{
+  width: 8px;
+  height: 8px;
+  border: 1px black solid;
+  float: left;
+}
+
+.DebugGrid .debugcell.walkable{
+  background-color: green;
+}

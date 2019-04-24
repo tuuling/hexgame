@@ -7,6 +7,12 @@ interface MyProps {
   y: number
 }
 
+export const houseParams = {
+  height: 2,
+  width: 3,
+  walkable: false
+};
+
 export default class House extends PureComponent<MyProps> {
 
   render(): React.ReactNode {

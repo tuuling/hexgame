@@ -19,6 +19,7 @@ export default class RhombusCord {
       isoY = Number(Math.floor(Number(isoY+'e'+decimals))+'e-'+decimals);
     } else {
       isoX = Math.floor(isoX);
+      // noinspection JSSuspiciousNameCombination
       isoY = Math.floor(isoY);
     }
 
@@ -49,6 +50,20 @@ export default class RhombusCord {
     let x = -Math.ceil(row / 2) + col;
 
     return { x, y };
+  }
+
+  static fromKey(key: string) {
+    let parseKey = key.match(/(-?\d+)[x](-?\d+)/);
+
+    if (parseKey) {
+      let [, x, y] = parseKey.map(function (item) {
+        return parseInt(item)
+      });
+      return new this(x, y)
+    } else {
+      throw 'Invalid key';
+    }
+
   }
 
   static fromOffset(col: number, row: number) {

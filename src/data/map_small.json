@@ -1,0 +1,21 @@
+{
+  "ground": {
+    "0q0":  {"type": "grass"},   "1q0":  {"type": "grass"},    "2q0":  {"type": "grass"},   "3q0":  {"type": "grass"},    "4q0":  {"type": "grass"},
+    "0q1":  {"type": "grass"},   "1q1":  {"type": "grass"},    "2q1":  {"type": "grass"},   "3q1":  {"type": "grass"},    "4q1":  {"type": "grass"},
+    "0q2":  {"type": "grass"},   "1q2":  {"type": "grass"},    "2q2":  {"type": "grass"},   "3q2":  {"type": "grass"},    "4q2":  {"type": "grass"},
+    "0q3":  {"type": "grass"},   "1q3":  {"type": "grass"},    "2q3":  {"type": "grass"},   "3q3":  {"type": "grass"},    "4q3":  {"type": "grass"},
+    "0q4":  {"type": "grass"},   "1q4":  {"type": "grass"},    "2q4":  {"type": "grass"},   "3q4":  {"type": "grass"},    "4q4":  {"type": "grass"},
+    "0q5":  {"type": "grass"},   "1q5":  {"type": "grass"},    "2q5":  {"type": "grass"},   "3q5":  {"type": "grass"},    "4q5":  {"type": "grass"},
+    "0q6":  {"type": "grass"},   "1q6":  {"type": "grass"},    "2q6":  {"type": "grass"},   "3q6":  {"type": "grass"},    "4q6":  {"type": "grass"},
+    "0q7":  {"type": "grass"},   "1q7":  {"type": "grass"},    "2q7":  {"type": "grass"},   "3q7":  {"type": "grass"},    "4q7":  {"type": "grass"},
+    "0q8":  {"type": "grass"},   "1q8":  {"type": "grass"},    "2q8":  {"type": "grass"},   "3q8":  {"type": "grass"},    "4q8":  {"type": "grass"},
+    "0q9":  {"type": "grass"},   "1q9":  {"type": "grass"},    "2q9":  {"type": "grass"},   "3q9":  {"type": "grass"},    "4q9":  {"type": "grass"},
+    "0q10": {"type": "grass"},   "1q10": {"type": "grass"},    "2q10": {"type": "sand"},    "3q10": {"type": "sand"},     "4q10": {"type": "grass"},
+    "0q11": {"type": "grass"},   "1q11": {"type": "grass"},    "2q11": {"type": "sand"},    "3q11": {"type": "sand"},     "4q11": {"type": "grass"},
+    "0q12": {"type": "grass"},   "1q12": {"type": "grass"},    "2q12": {"type": "sand"},    "3q12": {"type": "grass"},    "4q12": {"type": "grass"},
+    "0q13": {"type": "grass"},   "1q13": {"type": "grass"},    "2q13": {"type": "grass"},   "3q13": {"type": "grass"},    "4q13": {"type": "grass"}
+  },
+  "objects" : {
+    "1q3": "hedge", "1q2": "hedge"
+  }
+}
