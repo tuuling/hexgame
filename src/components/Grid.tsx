@@ -36,7 +36,10 @@ class Grid extends Component<MyProps> {
   private gridElement: React.RefObject<SVGSVGElement>;
 
   private locationOnMap(e: React.MouseEvent) {
-    let { top, left } = this.gridElement.current ? this.gridElement.current.getBoundingClientRect() : { top: 0, left: 0 };
+    let { top, left } = this.gridElement.current ? this.gridElement.current.getBoundingClientRect() : {
+      top: 0,
+      left: 0
+    };
 
     return { x: e.clientX - left, y: e.clientY - top }
   }
@@ -49,11 +52,12 @@ class Grid extends Component<MyProps> {
   };
 
   handleClick = (e: React.MouseEvent) => {
+    console.log('asdfasf');
     let { x: xcord, y: ycord } = this.locationOnMap(e);
-
     let cell = RhombusCord.fromPixel(xcord, ycord);
-    if(cell.key in this.props.ground) {
+    if (cell.key in this.props.ground) {
       this.props.setCharDest(cell.pixel.x, cell.pixel.y);
+
     }
 
   };
@@ -61,7 +65,7 @@ class Grid extends Component<MyProps> {
 
   render(): React.ReactNode {
     return (
-      <svg className='Grid' onMouseMove={this.handleHover} onClick={this.handleClick}>
+      <svg className='Grid' >
 
         <g transform={'translate(0, 0)'} ref={this.gridElement}>
           <Ground/>
@@ -71,7 +75,12 @@ class Grid extends Component<MyProps> {
         <g transform={'translate(0, 0)'}>
           <Objects/>
         </g>
-        <DebugSight />
+        <g transform={'translate(0, 0)'}>
+          <DebugSight/>
+        </g>
+        {/* for some unknown reason it is best to bind events to the last rendered svg element that is not re-rendered during the app.
+         Otherwise some events get lost*/}
+        <rect width="100%" height="100%" style={{ fill: 'rgba(255, 255, 255, 0)' }} onMouseMove={this.handleHover} onClick={this.handleClick}/>
       </svg>
     );
   }
