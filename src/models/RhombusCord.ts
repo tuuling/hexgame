@@ -90,4 +90,8 @@ export default class RhombusCord {
     return RhombusCord.offsetToPixel(this.offset.q, this.offset.r);
   }
 
+  public toIso(decimals: number = 0) {
+    return RhombusCord.pixelToIso(this.pixel.x, this.pixel.y, decimals);
+  }
+
 }

@@ -11,6 +11,7 @@ import { changeCords, setCharDest } from '../redux/actions';
 import './Grid.css';
 import State from '../interfaces/State';
 import Objects from './Objects';
+import DebugSight from './DebugSight';
 
 
 interface StateProps {
@@ -70,7 +71,7 @@ class Grid extends Component<MyProps> {
         <g transform={'translate(0, 0)'}>
           <Objects/>
         </g>
-
+        <DebugSight />
       </svg>
     );
   }

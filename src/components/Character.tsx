@@ -52,8 +52,9 @@ class Character extends Component<MyProps, MyState> {
     // Animate when destination changes
     if (this.props.destination.x !== prevProps.destination.x || this.props.destination.y !== prevProps.destination.y) {
 
-      let dest = RhombusCord.fromPixel(this.props.destination.x, this.props.destination.y).key;
       let start = RhombusCord.fromPixel(this.props.location.x, this.props.location.y).key;
+      let dest = RhombusCord.fromPixel(this.props.destination.x, this.props.destination.y).key;
+
       this.path = this.props.getPath(start, dest);
       // Start moving to 2nd waypoint.
       this.path.shift();
