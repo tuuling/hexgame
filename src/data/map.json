@@ -52,6 +52,6 @@
     "0q49": {"type": "grass"},   "1q49": {"type": "grass"},    "2q49": {"type": "grass"},   "3q49": {"type": "grass"},    "4q49": {"type": "grass"},   "5q49": {"type": "grass"},   "6q49": {"type": "grass"},    "7q49": {"type": "grass"},   "8q49": {"type": "grass"},    "9q49": {"type": "grass"},  "10q49": {"type": "grass"},   "11q49": {"type": "grass"},    "12q49": {"type": "grass"},   "13q49": {"type": "grass"},    "14q49": {"type": "grass"}
   },
   "objects" : {
-    "0q5": "hedge", "1q2": "hedge", "4q13": "house", "7q9": "tree", "7q6": "tree", "8q7": "tree"
+    "0q5": "hedge", "0q2": "hedge", "1q2": "hedge", "4q13": "house", "7q9": "tree", "7q6": "tree", "8q7": "tree"
   }
 }

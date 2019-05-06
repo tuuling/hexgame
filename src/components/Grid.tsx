@@ -52,7 +52,6 @@ class Grid extends Component<MyProps> {
   };
 
   handleClick = (e: React.MouseEvent) => {
-    console.log('asdfasf');
     let { x: xcord, y: ycord } = this.locationOnMap(e);
     let cell = RhombusCord.fromPixel(xcord, ycord);
     if (cell.key in this.props.ground) {

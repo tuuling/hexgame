@@ -12,7 +12,7 @@ const renderSelector = (state: State) => state.render;
 
 
 // methods to translate between iso and maze cordinates
-const isoToMazeSelector = createSelector(
+export const isoToMazeSelector = createSelector(
   [renderSelector],
   (render) => {
     return (key: string) => {
@@ -29,7 +29,7 @@ const isoToMazeSelector = createSelector(
     }
   });
 
-const mazeToIsoSelector = createSelector(
+export const mazeToIsoSelector = createSelector(
   [renderSelector],
   (render) => {
     return (x: number, y: number) => {
@@ -87,7 +87,7 @@ export const mazeSelector = createSelector(
 );
 
 // planner is the actual pathfinder
-export const plannerSelector = createSelector(
+const plannerSelector = createSelector(
   [mazeSelector],
   (maze) => {
     return createPlanner(maze)
@@ -98,6 +98,7 @@ export const plannerSelector = createSelector(
 export const getPathSelector = createSelector(
   [isoToMazeSelector, mazeToIsoSelector, plannerSelector],
   (isoToMaze, mazeToIso, planner) => {
+    // path from a -> b
     return (a: string, b: string) => {
       let start = isoToMaze(a);
       let end = isoToMaze(b);

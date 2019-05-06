@@ -1,12 +1,15 @@
-import RhombusCord from '../models/RhombusCord';
 import { AnyAction, combineReducers } from 'redux';
+import reduceReducer from 'reduce-reducers';
 
+import RhombusCord from '../models/RhombusCord';
 import State from '../interfaces/State';
+
+import { isoToMazeSelector, mazeSelector } from './selectors';
 
 function destination(state = { x: 92, y: 25 }, action: AnyAction) {
   switch (action.type) {
-    case 'SET_CHAR_DEST':
-      return action.cords;
+    // case 'SET_CHAR_DEST':
+    //   return action.cords;
     default:
       return state
   }
@@ -44,8 +47,10 @@ function map(state = { ground: {}, objects: {}}, action: AnyAction) {
       Object.keys(action.map.ground).forEach((key: string) => {
         let parseKey = key.match(/(-?\d+)[q](-?\d+)/);
 
-        if(parseKey) {
-          let [ , q, r ] = parseKey.map(function(item) {return parseInt(item)});
+        if (parseKey) {
+          let [, q, r] = parseKey.map(function (item) {
+            return parseInt(item)
+          });
 
           let cord = RhombusCord.fromOffset(q, r);
 
@@ -57,7 +62,7 @@ function map(state = { ground: {}, objects: {}}, action: AnyAction) {
       Object.keys(action.map.objects).forEach((key: string) => {
         let parseKey = key.match(/(-?\d+)[q](-?\d+)/);
 
-        if(parseKey) {
+        if (parseKey) {
           let [, q, r] = parseKey.map(function (item) {
             return parseInt(item)
           });
@@ -91,8 +96,10 @@ function render(state: State['render'] = initialRender, action: AnyAction) {
       const offsetToKey = (item: string) => {
         let parseKey = item.match(/(-?\d+)[q](-?\d+)/);
 
-        if(parseKey) {
-          let [ , q, r ] = parseKey.map(function(item) {return parseInt(item)});
+        if (parseKey) {
+          let [, q, r] = parseKey.map(function (item) {
+            return parseInt(item)
+          });
           return RhombusCord.fromOffset(q, r).key;
         }
         return '';
@@ -107,7 +114,7 @@ function render(state: State['render'] = initialRender, action: AnyAction) {
         let A = a.match(/(-?\d+)[q](-?\d+)/);
         let B = b.match(/(-?\d+)[q](-?\d+)/);
 
-        if(A && B) {
+        if (A && B) {
           let [, Aq, Ar] = A.map(item => parseInt(item));
           let [, Bq, Br] = A.map(item => parseInt(item));
           return (Aq - Bq) || (Ar - Br);
@@ -133,8 +140,10 @@ function render(state: State['render'] = initialRender, action: AnyAction) {
       order.forEach((item) => {
         let parseKey = item.match(/(-?\d+)[x](-?\d+)/);
 
-        if(parseKey) {
-          let [ , x, y ] = parseKey.map(function(item) {return parseInt(item)});
+        if (parseKey) {
+          let [, x, y] = parseKey.map(function (item) {
+            return parseInt(item)
+          });
           limits.x.max = Math.max(limits.x.max, x);
           limits.x.min = Math.min(limits.x.min, x);
           limits.y.max = Math.max(limits.y.max, y);
@@ -158,11 +167,39 @@ function render(state: State['render'] = initialRender, action: AnyAction) {
   }
 }
 
-const hexgameApp = combineReducers({
+const combinedReducers = combineReducers<State>({
   mouseCords,
   character,
   map,
   render
 });
+
+const charDestReducer = (state: State, action: AnyAction) => {
+  switch (action.type) {
+    case 'SET_CHAR_DEST': {
+
+      let maze = mazeSelector(state);
+      let isoToMaze = isoToMazeSelector(state);
+
+      let mazeLoc = isoToMaze(RhombusCord.fromPixel(action.cords.x, action.cords.y).key);
+      // Only set new destination for char if the location is walkable
+      if(maze.get(mazeLoc[0], mazeLoc[1]) === 0) {
+        return {
+          ...state,
+          character : {
+            ...state.character,
+            destination: action.cords
+          }
+        }
+      }
+
+      return state;
+    }
+    default:
+      return state;
+  }
+};
+
+const hexgameApp = reduceReducer<State>(combinedReducers, charDestReducer);
 
 export default hexgameApp;
