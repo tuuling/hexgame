@@ -25,11 +25,7 @@ class GroundTile extends Component<MyProps> {
 
   get tile(): Tile {
     return memoize((tileId) => {
-      let [, x, y] = tileId.match(/(-?\d+)[x](-?\d+)/).map(function (item: string) {
-        return parseInt(item)
-      });
-
-      return new Tile(new RhombusCord(x, y), this.props.tile.type);
+      return new Tile(RhombusCord.fromKey(tileId), this.props.tile.type);
     })(this.props.tileId);
   }
 

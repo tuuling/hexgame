@@ -66,6 +66,20 @@ export default class RhombusCord {
 
   }
 
+  static fromOffsetKey(key: string) {
+    let parseKey = key.match(/(-?\d+)[q](-?\d+)/);
+
+    if (parseKey) {
+      let [, q, r] = parseKey.map(function (item) {
+        return parseInt(item)
+      });
+      return RhombusCord.fromOffset(q, r)
+    } else {
+      throw 'Invalid key';
+    }
+
+  }
+
   static fromOffset(col: number, row: number) {
 
     let iso = this.offsetToIso(col, row);

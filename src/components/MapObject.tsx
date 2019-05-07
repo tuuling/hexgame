@@ -24,11 +24,7 @@ class MapObject extends PureComponent<MyProps> {
 
   get cord(): RhombusCord {
     return memoize((tileId) => {
-      let [, x, y] = tileId.match(/(-?\d+)[x](-?\d+)/).map(function (item: string) {
-        return parseInt(item)
-      });
-
-      return new RhombusCord(x, y);
+      return RhombusCord.fromKey(tileId)
     })(this.props.tileId);
   }
 
@@ -37,9 +33,9 @@ class MapObject extends PureComponent<MyProps> {
       case 'house':
         return <House x={this.cord.pixel.x} y={this.cord.pixel.y}/>;
       case 'hedge':
-        return <Hedge  x={this.cord.pixel.x} y={this.cord.pixel.y}/>;
+        return <Hedge x={this.cord.pixel.x} y={this.cord.pixel.y}/>;
       case 'tree':
-        return <Tree  x={this.cord.pixel.x} y={this.cord.pixel.y}/>;
+        return <Tree x={this.cord.pixel.x} y={this.cord.pixel.y}/>;
     }
   }
 }

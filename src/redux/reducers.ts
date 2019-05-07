@@ -45,32 +45,17 @@ function map(state = { ground: {}, objects: {}}, action: AnyAction) {
 
       // map is saved as column and rows, but x and y store
       Object.keys(action.map.ground).forEach((key: string) => {
-        let parseKey = key.match(/(-?\d+)[q](-?\d+)/);
 
-        if (parseKey) {
-          let [, q, r] = parseKey.map(function (item) {
-            return parseInt(item)
-          });
+        let cord = RhombusCord.fromOffsetKey(key);
 
-          let cord = RhombusCord.fromOffset(q, r);
-
-          newMap.ground[cord.key] = action.map.ground[key];
-        }
+        newMap.ground[cord.key] = action.map.ground[key];
 
       });
 
       Object.keys(action.map.objects).forEach((key: string) => {
-        let parseKey = key.match(/(-?\d+)[q](-?\d+)/);
+        let cord = RhombusCord.fromOffsetKey(key);
 
-        if (parseKey) {
-          let [, q, r] = parseKey.map(function (item) {
-            return parseInt(item)
-          });
-
-          let cord = RhombusCord.fromOffset(q, r);
-
-          newMap.objects[cord.key] = action.map.objects[key];
-        }
+        newMap.objects[cord.key] = action.map.objects[key];
       });
 
       return newMap;
@@ -94,15 +79,7 @@ function render(state: State['render'] = initialRender, action: AnyAction) {
     case 'LOAD_MAP': {
 
       const offsetToKey = (item: string) => {
-        let parseKey = item.match(/(-?\d+)[q](-?\d+)/);
-
-        if (parseKey) {
-          let [, q, r] = parseKey.map(function (item) {
-            return parseInt(item)
-          });
-          return RhombusCord.fromOffset(q, r).key;
-        }
-        return '';
+        return RhombusCord.fromOffsetKey(item).key;
       };
 
       let order: string[] = Object.keys(action.map.ground);
@@ -111,12 +88,12 @@ function render(state: State['render'] = initialRender, action: AnyAction) {
       // order in column row system
       order.sort((a, b) => {
 
-        let A = a.match(/(-?\d+)[q](-?\d+)/);
-        let B = b.match(/(-?\d+)[q](-?\d+)/);
+        let A = RhombusCord.fromOffsetKey(a);
+        let B = RhombusCord.fromOffsetKey(b);
 
         if (A && B) {
-          let [, Aq, Ar] = A.map(item => parseInt(item));
-          let [, Bq, Br] = A.map(item => parseInt(item));
+          let { q: Aq, r: Ar } = A.offset;
+          let { q: Bq, r: Br } = B.offset;
           return (Aq - Bq) || (Ar - Br);
         } else {
           return 0;
@@ -138,17 +115,12 @@ function render(state: State['render'] = initialRender, action: AnyAction) {
 
       // find the limits of the map
       order.forEach((item) => {
-        let parseKey = item.match(/(-?\d+)[x](-?\d+)/);
+        let { isoX: x, isoY: y } = RhombusCord.fromKey(item).toIso();
 
-        if (parseKey) {
-          let [, x, y] = parseKey.map(function (item) {
-            return parseInt(item)
-          });
-          limits.x.max = Math.max(limits.x.max, x);
-          limits.x.min = Math.min(limits.x.min, x);
-          limits.y.max = Math.max(limits.y.max, y);
-          limits.y.min = Math.min(limits.y.min, y);
-        }
+        limits.x.max = Math.max(limits.x.max, x);
+        limits.x.min = Math.min(limits.x.min, x);
+        limits.y.max = Math.max(limits.y.max, y);
+        limits.y.min = Math.min(limits.y.min, y);
       });
 
       // Find out the order in which the objects need to rendered using.

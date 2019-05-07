@@ -5,27 +5,19 @@ import State from '../interfaces/State';
 
 import { houseParams } from '../components/map-objects/House';
 import createPlanner from 'l1-path-finder';
-
+import RhombusCord from '../models/RhombusCord';
 
 const mapSelector = (state: State) => state.map;
 const renderSelector = (state: State) => state.render;
-
 
 // methods to translate between iso and maze cordinates
 export const isoToMazeSelector = createSelector(
   [renderSelector],
   (render) => {
     return (key: string) => {
-      let parseKey = key.match(/(-?\d+)[x](-?\d+)/);
+      let { isoX: x, isoY: y } = RhombusCord.fromKey(key).toIso();
 
-      if (parseKey) {
-        let [, x, y] = parseKey.map(function (item) {
-          return parseInt(item)
-        });
-
-        return [x - render.limits.x.min, y - render.limits.y.min];
-      }
-      return [0, 0];
+      return [x - render.limits.x.min, y - render.limits.y.min];
     }
   });
 
