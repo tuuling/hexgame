@@ -94,7 +94,7 @@ function render(state: State['render'] = initialRender, action: AnyAction) {
         if (A && B) {
           let { q: Aq, r: Ar } = A.offset;
           let { q: Bq, r: Br } = B.offset;
-          return (Aq - Bq) || (Ar - Br);
+          return (Ar - Br) || (Aq - Bq);
         } else {
           return 0;
         }
