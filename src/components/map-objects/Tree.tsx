@@ -12,7 +12,7 @@ export default class Tree extends PureComponent<MyProps> {
   render(): React.ReactNode {
     // noinspection HtmlDeprecatedTag
     return (
-      <image href={tree} height={91} width={58} x={this.props.x - 28} y={this.props.y - 85}/>
+      <image href={tree} height={91} width={58} x={this.props.x - 30} y={this.props.y - 86}/>
     );
   }
 }
