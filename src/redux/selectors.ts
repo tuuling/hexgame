@@ -15,7 +15,7 @@ export const isoToMazeSelector = createSelector(
   [renderSelector],
   (render) => {
     return (key: string) => {
-      let { isoX: x, isoY: y } = RhombusCord.fromKey(key).toIso();
+      const { isoX: x, isoY: y } = RhombusCord.fromKey(key).toIso();
 
       return [x - render.limits.x.min, y - render.limits.y.min];
     }
@@ -35,7 +35,7 @@ export const mazeSelector = createSelector(
   [mapSelector, renderSelector, isoToMazeSelector],
   (map, render, isoToMaze) => {
 
-    let flatMaze = [];
+    const flatMaze = [];
 
     // 0 means walkable, 1 means not. Every ground by default is walkable
     for (let x = render.limits.x.min; x <= render.limits.x.max; x++) {
@@ -49,16 +49,16 @@ export const mazeSelector = createSelector(
     }
 
     // coordinates in the maze are always positive integers. Iso coordinates can be negative also.
-    let height = Math.abs(render.limits.x.max - render.limits.x.min) + 1;
-    let width = Math.abs(render.limits.y.max - render.limits.y.min) + 1;
+    const height = Math.abs(render.limits.x.max - render.limits.x.min) + 1;
+    const width = Math.abs(render.limits.y.max - render.limits.y.min) + 1;
 
-    let maze = ndarray(flatMaze, [height, width]);
+    const maze = ndarray(flatMaze, [height, width]);
 
     // Objects are not walkable
     Object.keys(map.objects).forEach(item => {
-      let type = map.objects[item];
-      let x = isoToMaze(item)[0];
-      let y = isoToMaze(item)[1];
+      const type = map.objects[item];
+      const x = isoToMaze(item)[0];
+      const y = isoToMaze(item)[1];
       switch (type) {
         case 'house':
           for (let w = 0; w < houseParams.width; w++) {
@@ -92,13 +92,13 @@ export const getPathSelector = createSelector(
   (isoToMaze, mazeToIso, planner) => {
     // path from a -> b
     return (a: string, b: string) => {
-      let start = isoToMaze(a);
-      let end = isoToMaze(b);
+      const start = isoToMaze(a);
+      const end = isoToMaze(b);
 
-      let path: number[] = [];
+      const path: number[] = [];
       planner.search(start[0], start[1], end[0], end[1], path);
 
-      let smooth = path.reduce((reducer: number[][], item, index) => {
+      const smooth = path.reduce((reducer: number[][], item, index) => {
         if (!reducer[Math.floor(index / 2)])
           reducer[Math.floor(index / 2)] = [];
 

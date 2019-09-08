@@ -9,7 +9,7 @@ export default class RhombusCord {
     this.y = y;
   }
 
-  public static pixelToIso(x: number, y: number, decimals: number = 0) {
+  public static pixelToIso(x: number, y: number, decimals = 0) {
 
     let isoX = (x - (y * 2)) / (this.cellSize.width);
     let isoY = (y + Math.floor(x / 2) - (this.cellSize.width / 2)) / this.cellSize.height;
@@ -27,68 +27,68 @@ export default class RhombusCord {
   }
 
   public static offsetToPixel(q: number, r: number) {
-    let offset = !(r % 2) ? (this.cellSize.width / 2) : 0;
-    let x = (this.cellSize.width / 2) + (q * (this.cellSize.width)) + offset;
-    let y = (this.cellSize.height / 2) + (r * this.cellSize.height / 2);
+    const offset = !(r % 2) ? (this.cellSize.width / 2) : 0;
+    const x = (this.cellSize.width / 2) + (q * (this.cellSize.width)) + offset;
+    const y = (this.cellSize.height / 2) + (r * this.cellSize.height / 2);
 
     return { x, y };
   }
 
   public static pixelToOffset(x: number, y: number) {
-    let iso = this.pixelToIso(x, y);
+    const iso = this.pixelToIso(x, y);
     return this.isoToOffset(iso.isoX, iso.isoY);
   }
 
   public static isoToOffset(x: number, y: number) {
-    let col = Math.ceil(x / 2 + y / 2);
-    let row = y + -x;
+    const col = Math.ceil(x / 2 + y / 2);
+    const row = y + -x;
     return { q: col, r: row }
   }
 
   public static offsetToIso(col: number, row: number) {
-    let y = col + Math.floor(row / 2);
-    let x = -Math.ceil(row / 2) + col;
+    const y = col + Math.floor(row / 2);
+    const x = -Math.ceil(row / 2) + col;
 
     return { x, y };
   }
 
   static fromKey(key: string) {
-    let parseKey = key.match(/(-?\d+)[x](-?\d+)/);
+    const parseKey = key.match(/(-?\d+)[x](-?\d+)/);
 
     if (parseKey) {
-      let [, x, y] = parseKey.map(function (item) {
+      const [, x, y] = parseKey.map(function (item) {
         return parseInt(item)
       });
       return new this(x, y)
     } else {
-      throw 'Invalid key';
+      throw new Error('Invalid key');
     }
 
   }
 
   static fromOffsetKey(key: string) {
-    let parseKey = key.match(/(-?\d+)[q](-?\d+)/);
+    const parseKey = key.match(/(-?\d+)[q](-?\d+)/);
 
     if (parseKey) {
-      let [, q, r] = parseKey.map(function (item) {
+      const [, q, r] = parseKey.map(function (item) {
         return parseInt(item)
       });
       return RhombusCord.fromOffset(q, r)
     } else {
-      throw 'Invalid key';
+      throw new Error('Invalid key');
     }
 
   }
 
   static fromOffset(col: number, row: number) {
 
-    let iso = this.offsetToIso(col, row);
+    const iso = this.offsetToIso(col, row);
 
     return new this(iso.x, iso.y);
   }
 
   static fromPixel(x: number, y: number) {
-    let iso = RhombusCord.pixelToIso(x, y);
+    const iso = RhombusCord.pixelToIso(x, y);
     return new this(iso.isoX, iso.isoY);
   }
 
@@ -104,7 +104,7 @@ export default class RhombusCord {
     return RhombusCord.offsetToPixel(this.offset.q, this.offset.r);
   }
 
-  public toIso(decimals: number = 0) {
+  public toIso(decimals = 0) {
     return RhombusCord.pixelToIso(this.pixel.x, this.pixel.y, decimals);
   }
 

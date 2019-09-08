@@ -42,7 +42,7 @@ class Objects extends Component<StateProps> {
     let renderCharAfter: number | null;
 
 
-    if (charLookupIndex == undefined || charLookupIndex < this.orderLookup[0]) {
+    if (charLookupIndex === undefined || charLookupIndex < this.orderLookup[0]) {
       renderCharAfter = null;
     } else if (charLookupIndex >= this.orderLookup[this.orderLookup.length-1]) {
       renderCharAfter = this.orderLookup.length-1;
@@ -70,7 +70,7 @@ class Objects extends Component<StateProps> {
 
           result.push(<MapObject key={key} tileId={key}/>);
 
-          if(this.renderCharAfter !== null && index == this.renderCharAfter)
+          if(this.renderCharAfter !== null && index === this.renderCharAfter)
             result.push(<Character key={'character'}/>);
 
           return result;
@@ -81,8 +81,8 @@ class Objects extends Component<StateProps> {
 }
 
 function mapStateToProps(state: State): StateProps {
-  let charLoc = state.character.location;
-  let charIso = RhombusCord.pixelToIso(charLoc.x, charLoc.y);
+  const charLoc = state.character.location;
+  const charIso = RhombusCord.pixelToIso(charLoc.x, charLoc.y);
 
   return {
     lookup: state.render.lookup,

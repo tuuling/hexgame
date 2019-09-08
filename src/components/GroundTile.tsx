@@ -19,9 +19,6 @@ interface GroundTileProps {
 type MyProps = GroundTileProps & StateProps;
 
 class GroundTile extends Component<MyProps> {
-  constructor(props: MyProps) {
-    super(props);
-  }
 
   get tile(): Tile {
     return memoize((tileId) => {

@@ -17,7 +17,7 @@ class HoverTile extends Component<StateProps> {
   get points(): string {
     return  memoize((pixel) => {
 
-      let { width, height } = RhombusCord.cellSize;
+      const { width, height } = RhombusCord.cellSize;
 
       return [
         `${pixel.x},${pixel.y - height / 2}`,
@@ -32,8 +32,8 @@ class HoverTile extends Component<StateProps> {
   render(): React.ReactNode {
 
     if(this.props.selectedCord) {
-      let style: CSSProperties = { transformOrigin: `${this.props.selectedCord.pixel.x}px ${this.props.selectedCord.pixel.y}px` };
-      let classnames = classNames('GroundTile', 'hover');
+      const style: CSSProperties = { transformOrigin: `${this.props.selectedCord.pixel.x}px ${this.props.selectedCord.pixel.y}px` };
+      const classnames = classNames('GroundTile', 'hover');
 
       return (
         <polygon points={this.points}
