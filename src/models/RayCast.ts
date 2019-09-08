@@ -59,9 +59,10 @@ export const castRay = (start: { x: number, y: number }, end: { x: number, y: nu
       return xend && yend;
     };
 
-    while (checkwhile(tileX, tileY)) {
+    grid.push([`${tileX}x${tileY}`]);
+
+    do {
       let newItem = [];
-      newItem.push(`${tileX}x${tileY}`);
 
       if (dtY.compare(dtX) > 0) {
         tileX = tileX + dtileX;
@@ -78,8 +79,11 @@ export const castRay = (start: { x: number, y: number }, end: { x: number, y: nu
         dtX = dtX.sub(dt);
         dtY = dtY.add(ddtY).sub(dt)
       }
+      newItem.push(`${tileX}x${tileY}`);
       grid.push(newItem);
     }
+    while (checkwhile(tileX, tileY));
+    grid.pop();
   } else {
     grid.push([`${tileX}x${tileY}`]);
   }

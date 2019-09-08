@@ -8,12 +8,16 @@ import charimg from '../character.png'
 import State from '../interfaces/State';
 
 import { setCharLoc } from '../redux/actions';
-import { getPathSelector } from '../redux/selectors';
+import { getPathSelector, isoToMazeSelector, mazeSelector } from '../redux/selectors';
+import { castRay } from '../models/RayCast';
+import ndarray from 'ndarray';
 
 interface StateProps {
   location: State['character']['location'],
   destination: State['character']['destination'],
-  getPath: Function
+  getPath: Function,
+  maze: ndarray,
+  isoToMaze: ReturnType<typeof isoToMazeSelector>
 }
 
 interface DispatchProps {
@@ -55,13 +59,35 @@ class Character extends Component<MyProps, MyState> {
       let start = RhombusCord.fromPixel(this.props.location.x, this.props.location.y).key;
       let dest = RhombusCord.fromPixel(this.props.destination.x, this.props.destination.y).key;
 
-      this.path = this.props.getPath(start, dest);
-      // Start moving to 2nd waypoint.
-      this.path.shift();
+      // if we can see dest, start walking to it
+      if(this.canSee(start, dest)) {
+        this.path = [dest]
+      } else {
+        this.path = this.props.getPath(start, dest);
+        // Start moving to 2nd waypoint.
+        this.path.shift();
+      }
 
       this.animateLocation();
 
     }
+  }
+
+  private canSee(from: string, to: string) {
+
+    let start = { x: RhombusCord.fromKey(from).toIso(2).isoX * 100, y: RhombusCord.fromKey(from).toIso(2).isoY * 100 };
+    let end = { x: RhombusCord.fromKey(to).toIso(2).isoX * 100, y: RhombusCord.fromKey(to).toIso(2).isoY * 100 };
+
+    let sight = castRay(start, end);
+
+    // every step needs to be visible
+    return sight.every((step) => {
+      //only one tile in each step needs to be visible
+      return step.some((tile) => {
+        let mazeLoc = this.props.isoToMaze(tile);
+        return this.props.maze.get(mazeLoc[0], mazeLoc[1]) === 0
+      })
+    });
   }
 
   private animateLocation() {
@@ -178,6 +204,8 @@ function mapStateToProps(state: State): StateProps {
     location: state.character.location,
     destination: state.character.destination,
     getPath: getPathSelector(state),
+    maze: mazeSelector(state),
+    isoToMaze: isoToMazeSelector(state),
   };
 }
 
