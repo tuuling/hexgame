@@ -14,14 +14,14 @@ import Fraction from 'fraction.js/fraction';
 const size = 100;
 
 const getHelpers = (pos: number, dir: number): [number, number, Fraction, Fraction] => {
-  let tile = Math.floor(pos / size);
+  const tile = Math.floor(pos / size);
 
   let dTile: number, dt: Fraction;
 
   if (dir > 0) {
     dTile = 1;
     dt = new Fraction(tile + 1).mul(size).sub(pos).div(dir);
-  } else if (dir == 0) {
+  } else if (dir === 0) {
     dTile = 0;
     dt = new Fraction(Number.MAX_SAFE_INTEGER);
     return [tile, dTile, dt, new Fraction(Number.MAX_SAFE_INTEGER)];
@@ -35,15 +35,17 @@ const getHelpers = (pos: number, dir: number): [number, number, Fraction, Fracti
 
 export const castRay = (start: { x: number, y: number }, end: { x: number, y: number }) => {
 
-  let grid: string[][] = [];
-  let ray = { x: end.x - start.x, y: end.y - start.y };
+  const grid: string[][] = [];
+  const ray = { x: end.x - start.x, y: end.y - start.y };
 
+  // eslint-disable-next-line prefer-const
   let [tileX, dtileX, dtX, ddtX] = getHelpers(start.x, ray.x);
+  // eslint-disable-next-line prefer-const
   let [tileY, dtileY, dtY, ddtY] = getHelpers(start.y, ray.y);
 
   if ((ray.x * ray.x) + (ray.y * ray.y) > 0) {
 
-    let checkwhile = (tileX: number, tileY: number) => {
+    const checkwhile = (tileX: number, tileY: number) => {
       let xend;
       let yend;
       if (dtileX > 0)
@@ -62,11 +64,11 @@ export const castRay = (start: { x: number, y: number }, end: { x: number, y: nu
     grid.push([`${tileX}x${tileY}`]);
 
     do {
-      let newItem = [];
+      const newItem = [];
 
       if (dtY.compare(dtX) > 0) {
         tileX = tileX + dtileX;
-        let dt = dtX;
+        const dt = dtX;
         dtX = dtX.add(ddtX).sub(dt);
         dtY = dtY.sub(dt);
       } else {
@@ -75,7 +77,7 @@ export const castRay = (start: { x: number, y: number }, end: { x: number, y: nu
         }
 
         tileY = tileY + dtileY;
-        let dt = dtY;
+        const dt = dtY;
         dtX = dtX.sub(dt);
         dtY = dtY.add(ddtY).sub(dt)
       }

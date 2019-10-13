@@ -37,7 +37,7 @@ class Grid extends Component<MyProps> {
   private gridElement: React.RefObject<SVGSVGElement>;
 
   private locationOnMap(e: React.MouseEvent) {
-    let { top, left } = this.gridElement.current ? this.gridElement.current.getBoundingClientRect() : {
+    const { top, left } = this.gridElement.current ? this.gridElement.current.getBoundingClientRect() : {
       top: 0,
       left: 0
     };
@@ -46,15 +46,15 @@ class Grid extends Component<MyProps> {
   }
 
   handleHover = (e: React.MouseEvent) => {
-    let { x: xcord, y: ycord } = this.locationOnMap(e);
+    const { x: xcord, y: ycord } = this.locationOnMap(e);
 
     this.props.changeCords(xcord, ycord);
 
   };
 
   handleClick = (e: React.MouseEvent) => {
-    let { x: xcord, y: ycord } = this.locationOnMap(e);
-    let cell = RhombusCord.fromPixel(xcord, ycord);
+    const { x: xcord, y: ycord } = this.locationOnMap(e);
+    const cell = RhombusCord.fromPixel(xcord, ycord);
     if (cell.key in this.props.ground) {
       this.props.setCharDest(cell.pixel.x, cell.pixel.y);
 

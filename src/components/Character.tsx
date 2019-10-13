@@ -56,8 +56,8 @@ class Character extends Component<MyProps, MyState> {
     // Animate when destination changes
     if (this.props.destination.x !== prevProps.destination.x || this.props.destination.y !== prevProps.destination.y) {
 
-      let start = RhombusCord.fromPixel(this.props.location.x, this.props.location.y).key;
-      let dest = RhombusCord.fromPixel(this.props.destination.x, this.props.destination.y).key;
+      const start = RhombusCord.fromPixel(this.props.location.x, this.props.location.y).key;
+      const dest = RhombusCord.fromPixel(this.props.destination.x, this.props.destination.y).key;
 
       // if we can see dest, start walking to it
       if(this.canSee(start, dest)) {
@@ -73,18 +73,18 @@ class Character extends Component<MyProps, MyState> {
     }
   }
 
-  private canSee(from: string, to: string) {
+  protected canSee(from: string, to: string): boolean {
 
-    let start = { x: RhombusCord.fromKey(from).toIso(2).isoX * 100, y: RhombusCord.fromKey(from).toIso(2).isoY * 100 };
-    let end = { x: RhombusCord.fromKey(to).toIso(2).isoX * 100, y: RhombusCord.fromKey(to).toIso(2).isoY * 100 };
+    const start = { x: RhombusCord.fromKey(from).toIso(2).isoX * 100, y: RhombusCord.fromKey(from).toIso(2).isoY * 100 };
+    const end = { x: RhombusCord.fromKey(to).toIso(2).isoX * 100, y: RhombusCord.fromKey(to).toIso(2).isoY * 100 };
 
-    let sight = castRay(start, end);
+    const sight = castRay(start, end);
 
     // every step needs to be visible
     return sight.every((step) => {
       //only one tile in each step needs to be visible
       return step.some((tile) => {
-        let mazeLoc = this.props.isoToMaze(tile);
+        const mazeLoc = this.props.isoToMaze(tile);
         return this.props.maze.get(mazeLoc[0], mazeLoc[1]) === 0
       })
     });
@@ -94,22 +94,22 @@ class Character extends Component<MyProps, MyState> {
     window.clearInterval(this.moveInterval);
     window.clearInterval(this.animationInterval);
 
-    let waypoint = RhombusCord.fromKey(this.path[0]);
+    const waypoint = RhombusCord.fromKey(this.path[0]);
 
-    let currentIso = RhombusCord.pixelToIso(waypoint.pixel.x, waypoint.pixel.y, 2);
-    let prevIso = RhombusCord.pixelToIso(this.props.location.x, this.props.location.y, 2);
+    const currentIso = RhombusCord.pixelToIso(waypoint.pixel.x, waypoint.pixel.y, 2);
+    const prevIso = RhombusCord.pixelToIso(this.props.location.x, this.props.location.y, 2);
 
-    let isoVector = new Victor(currentIso.isoX - prevIso.isoX, currentIso.isoY - prevIso.isoY);
-    let pixelVector = new Victor(waypoint.pixel.x - this.props.location.x, waypoint.pixel.y - this.props.location.y);
+    const isoVector = new Victor(currentIso.isoX - prevIso.isoX, currentIso.isoY - prevIso.isoY);
+    const pixelVector = new Victor(waypoint.pixel.x - this.props.location.x, waypoint.pixel.y - this.props.location.y);
 
-    let speedVector = new Victor(pixelVector.x / isoVector.length() / this.framerate * this.speed, pixelVector.y / isoVector.length() / this.framerate * this.speed);
+    const speedVector = new Victor(pixelVector.x / isoVector.length() / this.framerate * this.speed, pixelVector.y / isoVector.length() / this.framerate * this.speed);
 
     let remainingVector = pixelVector.clone();
 
     let direction = 0;
 
     {
-      let angle = speedVector.angleDeg();
+      const angle = speedVector.angleDeg();
       if(angle >= 0 && angle <= 90) {
         direction = 2;
       } else if(angle > 90 && angle <= 180) {

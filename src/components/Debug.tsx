@@ -26,10 +26,10 @@ class Debug extends Component<MyProps> {
 
   render(): React.ReactNode {
 
-    let { x, y } = this.props.mouseCords;
-    let { isoX, isoY } = RhombusCord.pixelToIso(x, y, 2);
-    let { q, r } = RhombusCord.pixelToOffset(x, y);
-    let char = RhombusCord.pixelToIso(this.props.charLoc.x, this.props.charLoc.y);
+    const { x, y } = this.props.mouseCords;
+    const { isoX, isoY } = RhombusCord.pixelToIso(x, y, 2);
+    const { q, r } = RhombusCord.pixelToOffset(x, y);
+    const char = RhombusCord.pixelToIso(this.props.charLoc.x, this.props.charLoc.y);
 
     return (
       <div className="debug">

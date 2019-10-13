@@ -18,14 +18,14 @@ class DebugGrid extends Component<StateProps> {
 
   render(): React.ReactNode {
 
-    let maze = this.props.maze;
+    const maze = this.props.maze;
 
-    let table = [];
+    const table = [];
 
     for (let y = 0; y < maze.shape[1]; y++) {
-      let children = [];
+      const children = [];
       for (let x = 0; x < maze.shape[0]; x++) {
-        let classnames = classNames('debugcell', { 'walkable': !maze.get(x, y) });
+        const classnames = classNames('debugcell', { 'walkable': !maze.get(x, y) });
         children.push(<div className={classnames} key={x}/>);
       }
       table.push(<div className="debugrow" key={y}>{children}</div>);

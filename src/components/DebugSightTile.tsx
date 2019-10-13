@@ -13,9 +13,9 @@ export default class DebugSightTile extends Component<DebugSightTileProps> {
   get points(): string {
     return memoize((tileId) => {
 
-      let pixel = RhombusCord.fromKey(tileId).pixel;
+      const pixel = RhombusCord.fromKey(tileId).pixel;
 
-      let { width, height } = RhombusCord.cellSize;
+      const { width, height } = RhombusCord.cellSize;
 
       return [
         `${pixel.x},${pixel.y - height / 2}`,
@@ -29,8 +29,8 @@ export default class DebugSightTile extends Component<DebugSightTileProps> {
 
   render(): React.ReactNode {
 
-    let style: CSSProperties = { transformOrigin: `${RhombusCord.fromKey(this.props.tileId).pixel.x}px ${RhombusCord.fromKey(this.props.tileId).pixel.y}px` };
-    let classnames = classNames('GroundTile', 'hover');
+    const style: CSSProperties = { transformOrigin: `${RhombusCord.fromKey(this.props.tileId).pixel.x}px ${RhombusCord.fromKey(this.props.tileId).pixel.y}px` };
+    const classnames = classNames('GroundTile', 'hover');
 
     return (
       <polygon points={this.points}

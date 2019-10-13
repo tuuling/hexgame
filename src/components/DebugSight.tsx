@@ -17,16 +17,16 @@ class DebugSight extends Component<StateProps> {
 
   render(): React.ReactNode {
 
-    let mouseTile = RhombusCord.fromKey(this.props.mouseTile);
-    let charTile = RhombusCord.fromKey(this.props.charTile);
+    const mouseTile = RhombusCord.fromKey(this.props.mouseTile);
+    const charTile = RhombusCord.fromKey(this.props.charTile);
 
 
-    let start = { x: charTile.toIso(2).isoX * 100, y: charTile.toIso(2).isoY * 100 };
-    let end = { x: mouseTile.toIso(2).isoX * 100, y: mouseTile.toIso(2).isoY * 100 };
+    const start = { x: charTile.toIso(2).isoX * 100, y: charTile.toIso(2).isoY * 100 };
+    const end = { x: mouseTile.toIso(2).isoX * 100, y: mouseTile.toIso(2).isoY * 100 };
 
-    let grid = castRay(start, end);
+    const grid = castRay(start, end);
 
-    let style: CSSProperties = { stroke: 'black', strokeWidth: 2 };
+    const style: CSSProperties = { stroke: 'black', strokeWidth: 2 };
 
     return (
       <>

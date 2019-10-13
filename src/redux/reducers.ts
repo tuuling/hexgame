@@ -8,8 +8,8 @@ import { isoToMazeSelector, mazeSelector } from './selectors';
 
 function destination(state = { x: 92, y: 25 }, action: AnyAction) {
   switch (action.type) {
-    // case 'SET_CHAR_DEST':
-    //   return action.cords;
+  // case 'SET_CHAR_DEST':
+  //   return action.cords;
     default:
       return state
   }
@@ -41,19 +41,19 @@ function mouseCords(state = { x: 1, y: 1 }, action: AnyAction) {
 function map(state = { ground: {}, objects: {}}, action: AnyAction) {
   switch (action.type) {
     case 'LOAD_MAP': {
-      let newMap: State['map'] = { ground: {}, objects: {}};
+      const newMap: State['map'] = { ground: {}, objects: {}};
 
       // map is saved as column and rows, but x and y store
       Object.keys(action.map.ground).forEach((key: string) => {
 
-        let cord = RhombusCord.fromOffsetKey(key);
+        const cord = RhombusCord.fromOffsetKey(key);
 
         newMap.ground[cord.key] = action.map.ground[key];
 
       });
 
       Object.keys(action.map.objects).forEach((key: string) => {
-        let cord = RhombusCord.fromOffsetKey(key);
+        const cord = RhombusCord.fromOffsetKey(key);
 
         newMap.objects[cord.key] = action.map.objects[key];
       });
@@ -74,8 +74,8 @@ const initialRender = {
 
 function render(state: State['render'] = initialRender, action: AnyAction) {
   switch (action.type) {
-    // When the map is loaded, calculate data used for rendering and save in store
-    // Could use reselect to memoize this, but easier to debug if kept in redux store
+  // When the map is loaded, calculate data used for rendering and save in store
+  // Could use reselect to memoize this, but easier to debug if kept in redux store
     case 'LOAD_MAP': {
 
       const offsetToKey = (item: string) => {
@@ -88,12 +88,12 @@ function render(state: State['render'] = initialRender, action: AnyAction) {
       // order in column row system
       order.sort((a, b) => {
 
-        let A = RhombusCord.fromOffsetKey(a);
-        let B = RhombusCord.fromOffsetKey(b);
+        const A = RhombusCord.fromOffsetKey(a);
+        const B = RhombusCord.fromOffsetKey(b);
 
         if (A && B) {
-          let { q: Aq, r: Ar } = A.offset;
-          let { q: Bq, r: Br } = B.offset;
+          const { q: Aq, r: Ar } = A.offset;
+          const { q: Bq, r: Br } = B.offset;
           return (Ar - Br) || (Aq - Bq);
         } else {
           return 0;
@@ -106,16 +106,16 @@ function render(state: State['render'] = initialRender, action: AnyAction) {
 
 
       // generate lookup for reverse lookup - key => render order
-      let lookup: State['render']['lookup'] = order.reduce((result: State['render']['lookup'], current, index) => {
+      const lookup: State['render']['lookup'] = order.reduce((result: State['render']['lookup'], current, index) => {
         result[current] = index;
         return result;
       }, {});
 
-      let limits = { x: { min: 0, max: 0 }, y: { min: 0, max: 0 }};
+      const limits = { x: { min: 0, max: 0 }, y: { min: 0, max: 0 }};
 
       // find the limits of the map
       order.forEach((item) => {
-        let { isoX: x, isoY: y } = RhombusCord.fromKey(item).toIso();
+        const { isoX: x, isoY: y } = RhombusCord.fromKey(item).toIso();
 
         limits.x.max = Math.max(limits.x.max, x);
         limits.x.min = Math.min(limits.x.min, x);
@@ -160,10 +160,10 @@ const charDestReducer = (state: State, action: AnyAction) => {
   switch (action.type) {
     case 'SET_CHAR_DEST': {
 
-      let maze = mazeSelector(state);
-      let isoToMaze = isoToMazeSelector(state);
+      const maze = mazeSelector(state);
+      const isoToMaze = isoToMazeSelector(state);
 
-      let mazeLoc = isoToMaze(RhombusCord.fromPixel(action.cords.x, action.cords.y).key);
+      const mazeLoc = isoToMaze(RhombusCord.fromPixel(action.cords.x, action.cords.y).key);
       // Only set new destination for char if the location is walkable
       if(maze.get(mazeLoc[0], mazeLoc[1]) === 0) {
         return {

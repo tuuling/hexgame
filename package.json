@@ -3,29 +3,29 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/classnames": "^2.2.7",
-    "@types/jest": "24.0.11",
+    "@types/classnames": "^2.2.9",
+    "@types/jest": "^24.0.18",
     "@types/memoize-one": "^4.1.1",
     "@types/ndarray": "^1.0.7",
-    "@types/node": "11.13.4",
-    "@types/react": "16.8.13",
-    "@types/react-dom": "16.8.4",
-    "@types/react-redux": "^7.0.6",
+    "@types/node": "^12.7.4",
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.9.0",
+    "@types/react-redux": "^7.1.2",
     "@types/victor": "^1.1.0",
     "classnames": "^2.2.6",
     "fraction.js": "^4.0.12",
     "l1-path-finder": "^1.0.0",
-    "memoize-one": "^5.0.4",
+    "memoize-one": "^5.1.1",
     "ndarray": "^1.0.18",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-redux": "^7.0.2",
-    "react-scripts": "2.1.8",
-    "reduce-reducers": "^1.0.3",
-    "redux": "^4.0.1",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-redux": "^7.1.1",
+    "react-scripts": "^3.1.1",
+    "reduce-reducers": "^1.0.4",
+    "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.8",
     "reselect": "^4.0.0",
-    "typescript": "3.4.3",
+    "typescript": "^3.6.2",
     "victor": "^1.1.0"
   },
   "scripts": {
@@ -46,8 +46,8 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^1.6.0",
-    "@typescript-eslint/parser": "^1.6.0",
-    "eslint-plugin-react": "^7.12.4"
+    "@typescript-eslint/eslint-plugin": "^2.1.0",
+    "@typescript-eslint/parser": "^2.1.0",
+    "eslint-plugin-react": "^7.14.3"
   }
 }
