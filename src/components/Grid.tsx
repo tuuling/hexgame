@@ -12,6 +12,7 @@ import './Grid.css';
 import State from '../interfaces/State';
 import Objects from './Objects';
 import DebugSight from './DebugSight';
+import Filters from './Filters';
 
 
 interface StateProps {
@@ -64,14 +65,14 @@ class Grid extends Component<MyProps> {
 
   render(): React.ReactNode {
     return (
-      <svg className='Grid' >
-
-        <g transform={'translate(0, 0)'} ref={this.gridElement}>
+      <svg className='Grid'>
+        <Filters/>
+        <g transform={'translate(0, 0)'} filter={'url(#nightFilter)'} ref={this.gridElement}>
           <Ground/>
           <HoverTile/>
         </g>
 
-        <g transform={'translate(0, 0)'}>
+        <g transform={'translate(0, 0)'} filter={'url(#nightFilter)'}>
           <Objects/>
         </g>
         <g transform={'translate(0, 0)'}>
@@ -79,7 +80,10 @@ class Grid extends Component<MyProps> {
         </g>
         {/* for some unknown reason it is best to bind events to the last rendered svg element that is not re-rendered during the app.
          Otherwise some events get lost*/}
-        <rect width="100%" height="100%" style={{ fill: 'rgba(255, 255, 255, 0)' }} onMouseMove={this.handleHover} onClick={this.handleClick}/>
+        <rect width="100%" height="100%"
+              style={{ fill: 'rgba(255, 255, 255, 0)' }}
+              onMouseMove={this.handleHover}
+              onClick={this.handleClick} />
       </svg>
     );
   }
@@ -87,7 +91,9 @@ class Grid extends Component<MyProps> {
 
 
 function mapStateToProps(state: State): StateProps {
-  return { ground: state.map.ground };
+  return {
+    ground: state.map.ground
+  };
 }
 
 export default connect(

@@ -139,11 +139,21 @@ function render(state: State['render'] = initialRender, action: AnyAction) {
   }
 }
 
+function night(state = 0, action: AnyAction) {
+  switch (action.type) {
+    case 'SET_NIGHT':
+      return action.night;
+    default:
+      return state
+  }
+}
+
 const combinedReducers = combineReducers<State>({
   mouseCords,
   character,
   map,
-  render
+  render,
+  night
 });
 
 const charDestReducer = (state: State, action: AnyAction) => {

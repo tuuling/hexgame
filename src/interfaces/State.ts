@@ -30,5 +30,6 @@ export default interface State {
       x: {min: number, max: number},
       y: {min: number, max: number}
     }
-  }
+  },
+  night: number
 }

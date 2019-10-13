@@ -28,3 +28,8 @@ export const setCharLoc = (x: number, y: number) => ({
     y: y
   }
 });
+
+export const setNight = (night: number) => ({
+  type: 'SET_NIGHT',
+  night: night
+});

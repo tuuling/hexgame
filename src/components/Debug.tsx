@@ -3,12 +3,27 @@ import { connect } from 'react-redux';
 
 import State from '../interfaces/State';
 import RhombusCord from '../models/RhombusCord';
+import { setNight } from '../redux/actions';
 
 interface StateProps {
   mouseCords: { x: number, y: number },
-  charLoc: { x: number, y: number }
+  charLoc: { x: number, y: number },
+  night: number
 }
-class Debug extends Component<StateProps> {
+
+interface DispatchProps {
+  setNight: typeof setNight
+}
+
+type MyProps = DispatchProps & StateProps;
+
+
+class Debug extends Component<MyProps> {
+
+  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.props.setNight(parseFloat(event.target.value));
+  };
+
   render(): React.ReactNode {
 
     let { x, y } = this.props.mouseCords;
@@ -22,8 +37,10 @@ class Debug extends Component<StateProps> {
         iso location: {`${isoX}, ${isoY}`}; <br/>
         iso cell {`${Math.floor(isoX)}x${Math.floor(isoY)}`}; <br/>
         offset location: {`${q}q${r}`}; <br/>
-        char location: {`${char.isoX}x${char.isoY}`}
+        char location: {`${char.isoX}x${char.isoY}`} <br/>
+        Nighttime: <input type="number" min="0" max="1" step="0.01" value={this.props.night} onChange={this.handleChange} />
       </div>
+
     );
   }
 }
@@ -34,10 +51,12 @@ function mapStateToProps(state: State): StateProps {
       x: state.mouseCords.x,
       y: state.mouseCords.y
     },
-    charLoc: state.character.location
+    charLoc: state.character.location,
+    night: state.night
   }
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  { setNight }
 )(Debug)
