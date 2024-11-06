@@ -2,6 +2,7 @@
   "name": "hexgame",
   "version": "0.1.0",
   "private": false,
+  "homepage": "/hexgame/",
   "dependencies": {
     "@types/classnames": "^2.2.9",
     "@types/jest": "^24.0.25",
@@ -28,8 +29,8 @@
     "victor": "^1.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "heroku-postbuild": "npm run build",
